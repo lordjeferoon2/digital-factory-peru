@@ -1,0 +1,24 @@
+info:
+  application:
+    name: codechallenge
+    description: Microservicio de alumnos
+    version: 1.0.0
+    year: 2024
+  vendor:
+    name: Digital Factory
+    address: Scotiabank
+    city: Lima
+    country: Peru
+    phone: (01) 311 6000
+    email: jcayo@scotiabank.com.pe
+    url: https://www.scotiabank.com.pe/creando-contigo
+
+server:
+  servlet:
+    context-path: /ms-alumnos
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/nombredetubasededatos
