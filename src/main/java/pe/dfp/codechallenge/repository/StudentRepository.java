@@ -1,12 +1,12 @@
 package pe.dfp.codechallenge.repository;
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-
 import pe.dfp.codechallenge.model.Student;
-import reactor.core.publisher.Mono;
 
-public interface StudentRepository extends ReactiveMongoRepository<Student, String> {
+import java.util.List;
+import java.util.Optional;
 
-    Mono<Student> findByFirstName(String firstName);
-
+public interface StudentRepository {
+    Optional<Student> findById(Long id);
+    void save(Student alumno);
+    List<Student> findAllByEstado(boolean estado);
 }

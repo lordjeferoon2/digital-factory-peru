@@ -9,20 +9,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "DFStudents")
 public class Student {
 
-    @Id
-    private String id;
+    @NotNull(message = "Id name is mandatory")
+    private Long id;
 
     @NotBlank(message = "First name is mandatory")
     private String firstName;

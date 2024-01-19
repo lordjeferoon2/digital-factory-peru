@@ -3,43 +3,31 @@ package pe.dfp.codechallenge.service;
 import org.springframework.stereotype.Service;
 
 import pe.dfp.codechallenge.model.Student;
-import pe.dfp.codechallenge.repository.StudentRepository;
+import pe.dfp.codechallenge.repository.StudentMemoryRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class StudentService {
 
-    private final StudentRepository studentRepository;
-    
-    public StudentService(StudentRepository studentRepository) {
+    private final StudentMemoryRepository studentRepository;
+
+    public StudentService(StudentMemoryRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
-
-    public Flux<Student> getAllStudents() {
-        return studentRepository.findAll();
+    
+    public Mono<Void> saveStudent(Student student) {
+        if (studentRepository.findById(student.getId()).isPresent()) {
+            return Mono.error(new RuntimeException("El Id del alumno ya existe"));
+        }
+        studentRepository.save(student);
+        return Mono.empty();
     }
 
-    public Mono<Student> getStudentById(String id) {
-        return studentRepository.findById(id);
-    }
-
-    public Mono<Student> createStudent(Student student) {
-        return studentRepository.save(student);
-    }
-
-    public Mono<Student> updateStudent(String id, Student student) {
-        return studentRepository.findById(id)
-                .flatMap(existingStudent -> {
-                    existingStudent.setFirstName(student.getFirstName());
-                    existingStudent.setLastName(student.getLastName());
-                    existingStudent.setActive(student.isActive());
-                    existingStudent.setDateOfBirth(student.getDateOfBirth());
-                    return studentRepository.save(existingStudent);
-                });
-    }
-
-    public Mono<Void> deleteStudent(String id) {
-        return studentRepository.deleteById(id);
+    public Flux<Student> getAllStudentsByStatusActive() {
+        List<Student> alumnosActivos = studentRepository.findByEstado(true);
+        return Flux.fromIterable(alumnosActivos);
     }
 }
